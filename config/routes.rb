@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :posts
+  resources :posts do
+    collection do
+      get 'myposts'
+    end
+  end
   get 'pages/index'
   get 'pages/admin'
   get 'pages/manager'

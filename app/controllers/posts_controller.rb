@@ -7,6 +7,11 @@ class PostsController < ApplicationController
     @posts = Post.all
   end
 
+  def myposts
+    @page_title = "My Posts"
+    @posts = Post.where(user_id: current_user.id).order(updated_at: :desc)
+  end
+
   # GET /posts/1 or /posts/1.json
   def show
   end
@@ -37,6 +42,8 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
+    @post = Post.find(params[:id])
+    authorize @post
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to @post, notice: "Post was successfully updated." }
@@ -50,6 +57,7 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1 or /posts/1.json
   def destroy
+    authorize @post
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
